@@ -1,0 +1,56 @@
+#include <Adafruit_GFX.h>    // Core graphics library
+#include <Adafruit_ST7735.h> 
+#include <SPI.h>
+#include <OneWire.h>
+#include <DallasTemperature.h>
+
+#define TFT_DC   14
+#define TFT_CS   15
+#define TFT_RST   0
+#define TFT_SCLK 19 
+#define TFT_MOSI 18 
+
+#define ONE_WIRE_BUS 12
+OneWire oneWire(ONE_WIRE_BUS);	
+DallasTemperature sensors(&oneWire);
+
+Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
+//Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS,  TFT_DC, TFT_RST);
+
+void setup() {
+  //Serial.begin(9600);
+  //Serial.print("Hello! ST7735 TFT Test");
+
+  sensors.begin();
+
+  pinMode(LED_BUILTIN, OUTPUT);
+  
+  tft.initR(INITR_BLACKTAB);
+  tft.fillScreen(ST7735_BLACK);
+  //testdrawtext("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur adipiscing ante sed nibh tincidunt feugiat. Maecenas enim massa, fringilla sed malesuada et, malesuada sit amet turpis. Sed porttitor neque ut ante pretium vitae malesuada nunc bibendum. Nullam aliquet ultrices massa eu hendrerit. Ut sed nisi lorem. In vestibulum purus a tortor imperdiet posuere. ", ST7735_WHITE);
+}
+
+void testdrawtext(char *text, uint16_t color, uint8_t size) {
+  tft.setCursor(0, 0);
+  tft.setTextColor(color);
+  tft.setTextWrap(true);
+  tft.setTextSize(size);
+  tft.print(text);
+}
+
+char S[10];
+int i = 0;
+void loop() {
+  digitalWrite(LED_BUILTIN, HIGH);
+  delay(500);
+  digitalWrite(LED_BUILTIN, LOW);
+  delay(500);
+  
+  sensors.requestTemperatures(); 
+
+  dtostrf(sensors.getTempCByIndex(0), 7,  3, S);
+
+  //Serial.print("\ntemp=" + (String)sensors.getTempCByIndex(0));
+
+  testdrawtext(S, ST7735_RED, 3);
+}
