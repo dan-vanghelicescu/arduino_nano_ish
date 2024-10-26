@@ -8,3 +8,4 @@ https://lastminuteengineers.com/ds18b20-arduino-tutorial/?utm_content=cmp-true
 
 
 https://www.instructables.com/Temperature-and-Humidity-on-a-Graphical-LCD/
+https://nicuflorica.blogspot.com/2013/09/module-de-transmisiereceptie-radio-si.html
